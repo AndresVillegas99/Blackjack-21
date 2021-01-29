@@ -68,14 +68,14 @@ namespace Blackjack_21
             House casa = new House();
 
             Console.WriteLine("Bienvenido a Blackjack 21, seria jugador vs la casa.");
-            Console.WriteLine("Tiene 3 opciones, 1)revisar cartas PROPIAS, 2)pedir 1 carta, 3)Salir 4)esperar");
+            Console.WriteLine("Tiene 4 opciones, 1)revisar cartas PROPIAS, 2)pedir 1 carta, 3)Salir 4)esperar");
             Console.WriteLine("Escriba el numero de la accion que desea realizar.");
             A.mezclarCartas();
 
             casa.unaMasCasa(A);
             casa.unaMasCasa(A);
             B.unaMas(A);
-            B.unaMasAce(A);
+            B.unaMas(A);
             while (true)
             {
                 do // este loop es para el jugador que decida sus movimientos y solo sale una vez que decide esperar
@@ -148,8 +148,10 @@ namespace Blackjack_21
 
         public static void VSjugador() 
         {
+            Baraja A = new Baraja();
             int jugadores = 0;
             List<Jugador> jugadoresEnPartida =new List<Jugador> ();
+            List<int> puntosJugadores = new List<int>();
             Console.WriteLine("Cuantas personas van a jugar, maximo 4");
             jugadores = int.Parse( Console.ReadLine());
             for (int i = 0; i < jugadores; i++) 
@@ -157,6 +159,20 @@ namespace Blackjack_21
                 Jugador X = new Jugador();
                 jugadoresEnPartida.Add(X);
 
+            }
+            for (int i = 0; i < jugadores; i++)
+            {
+               int Y = new int();
+                puntosJugadores.Add(Y);
+
+            }
+            Console.WriteLine("Bienvenido a Blackjack 21, seria jugador vs la casa.");
+            Console.WriteLine("Tiene 4 opciones, 1)revisar cartas PROPIAS, 2)pedir 1 carta, 3)Salir 4)esperar");
+            Console.WriteLine("Escriba el numero de la accion que desea realizar.");
+            A.mezclarCartas();
+            for (int i = 0; i < jugadores; i++)
+            {
+                
             }
         }
     }
