@@ -10,9 +10,13 @@ namespace Blackjack_21
     public class Jugador
     {
         public  List<Cartas> mano = new List<Cartas>();
-        public  void salir()
+        public  int salir(List<Jugador> lista, int partida, Jugador j1)
         {
+
             Console.WriteLine("No seguiste con la ronda,saliste de la partida");
+            lista.Remove(j1);
+            partida = partida - 1;
+            return partida;
         }
 
         
