@@ -7,7 +7,7 @@ namespace Blackjack_21
 {
     class House
     {
-        private static List<Cartas> manoCasa = new List<Cartas>();
+        private static List<Cartas> manoCasa = new List<Cartas>(); // Tiene basicamente los mismos metodos que jugador, pero sin mostrar en consola cartas o numeros
 
         public void unaMasCasa(Baraja Bar)
         {

@@ -7,7 +7,7 @@ namespace Blackjack_21
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Escoja su modo a jugar. 1)Contra maquina 2=) contra personas");
+            Console.WriteLine("Escoja su modo a jugar. 1)Contra maquina 2=) contra personas"); // menu para escoger el modo deseado
             int modo = 0;
             modo = int.Parse(Console.ReadLine());
             switch (modo)
@@ -23,7 +23,7 @@ namespace Blackjack_21
             }
         }
 
-        public static void comparar(int a, int b)
+        public static void comparar(int a, int b) //se utiliza para comparar en caso de que el primer metodo de comparacion no funcione.
         {
            
             if (a == 21 && b == 21)
@@ -61,7 +61,7 @@ namespace Blackjack_21
         }
 
         public static void VSmaquina() 
-        {
+        {                       //Se crean todas las variables que utilizara el jugador y la maquina, respectivamente
             int total1 = 0;
             int total2 = 0;
             bool esperando = false;
@@ -70,17 +70,17 @@ namespace Blackjack_21
             Jugador B = new Jugador();
             House casa = new House();
 
-            
+                                                                                        // indica instrucciones al jugador
             Console.WriteLine("Bienvenido a Blackjack 21, seria jugador vs la casa.");
             Console.WriteLine("Tiene 4 opciones, 1)revisar cartas PROPIAS, 2)pedir 1 carta, 3)Salir 4)esperar");
             Console.WriteLine("Escriba el numero de la accion que desea realizar.");
-            A.mezclarCartas();
+            A.mezclarCartas(); 
 
-            casa.unaMasCasa(A);
+            casa.unaMasCasa(A); //Le da 2 cartas a la casa y al jugador
             casa.unaMasCasa(A);
             B.unaMas(A);
             B.unaMas(A);
-            menuVSMaquina(total1, total2, esperando, esperandoC, A, B, casa);
+            menuVSMaquina(total1, total2, esperando, esperandoC, A, B, casa); //muestra el menu de VSMaquina
         }
 
         public static void VSjugador() 
@@ -96,7 +96,7 @@ namespace Blackjack_21
             
             do
             {
-                jugadores = int.Parse(Console.ReadLine());
+                jugadores = int.Parse(Console.ReadLine()); //Restricion para solo se pueda tener 4 jugadores maximo, y no menos de 2 
                 if (jugadores > 4)
                 {
                     Console.WriteLine("Solo maximo 4 jugadores");
@@ -117,7 +117,7 @@ namespace Blackjack_21
 
                 for (int i = 0; i < jugadores; i++)
             {
-                Jugador X = new Jugador();
+                Jugador X = new Jugador(); //Se crea los jugadores y sus porpiedades nhecesarias y se agregan en listas.
                 int Y = new int();
                 bool pass = false;
                 jugadoresEnPartida.Add(X);
@@ -125,7 +125,7 @@ namespace Blackjack_21
                 esperandoJugadores.Add(pass);
             }
             A.mezclarCartas();
-            foreach (Jugador jug in jugadoresEnPartida)
+            foreach (Jugador jug in jugadoresEnPartida) //Se les dan 2 cartas a cada jugador
             {
                 jug.unaMas(A);
                 jug.unaMas(A);
@@ -134,7 +134,7 @@ namespace Blackjack_21
             Console.WriteLine("Tiene 4 opciones, 1)revisar cartas PROPIAS, 2)pedir 1 carta, 3)Salir 4)esperar");
             Console.WriteLine("Escriba el numero de la accion que desea realizar.");
 
-            for (int i = 0; i < jugadores; i++)
+            for (int i = 0; i < jugadores; i++)  //Este menu es igual al de vs maquina, pero una vez que el jugador decida esperar le da el turno al siguiente jugador.
             {
                 do // este loop es para el jugador que decida sus movimientos y solo sale una vez que decide esperar
                 {
@@ -159,9 +159,8 @@ namespace Blackjack_21
                         case 4:
                             esperandoJugadores[i] = jugadoresEnPartida[i].espera(esperandoJugadores[i], puntosJugadores[i]);
                             if(jugadores>= (i + 2)) {
-                                Console.WriteLine("Ahora es el turno del jugador " + (i + 2));
-                            }
-                            
+                                Console.WriteLine("Ahora es el turno del jugador " + (i + 2)); //Indica de quien es el siguiente turno
+                            } 
                             break;
                         default:
                             Console.WriteLine("Escoja una opcion valida");
@@ -176,10 +175,10 @@ namespace Blackjack_21
                     {
                         Console.WriteLine(puntosJugadores[t]);
                     }
-                    List<int> puntosJugadoresOrden = new List<int>(puntosJugadores);
+                    List<int> puntosJugadoresOrden = new List<int>(puntosJugadores); //Crea una nueva lista para tener el orden de mayor a menor en puntos
                     puntosJugadoresOrden.Sort();
                     puntosJugadoresOrden.Reverse();
-                    for(int z = 0; z< jugadores; z++)
+                    for(int z = 0; z< jugadores; z++) // utiliza la lista ordenana y la desordenada  y busa cual jugador tuvo el puntaje mas alto, y lo guarda en 'ganador'
                     {
                         int p1 = puntosJugadoresOrden[z];
                         for (int zz = 0; zz < jugadores; zz++) 
@@ -187,26 +186,24 @@ namespace Blackjack_21
                             int p2 = puntosJugadores[zz];
                             if (p1 == p2) 
                             {
-                                 ganador = zz+1;
-                                
-                            }
-                            
+                                 ganador = zz+1;    
+                            }  
                         }
                         break;
                     }
                     for (int p = 0; p < jugadores - 1; p++)
                     {
-                        if (puntosJugadoresOrden[p] > puntosJugadoresOrden[p + 1])
+                        if (puntosJugadoresOrden[p] > puntosJugadoresOrden[p + 1]) //Indica quien fue el ganador
                         {
                             Console.WriteLine("El jugador " + (ganador) + " ha ganado con " + puntosJugadoresOrden[p] + " puntos");
                             break;
                         }
-                        else if (puntosJugadoresOrden[p] == puntosJugadoresOrden[p + 1])
+                        else if (puntosJugadoresOrden[p] == puntosJugadoresOrden[p + 1]) //Indica si hubo un empate
                         {
                             Console.WriteLine("Ha ocurrido un empate, uno o mas jugadores tienen los mismos puntos, nadie gana");
                             break;
                         }
-                        else
+                        else //Indica si el ganador no esta de primero en la lista.
                         {
                             Console.WriteLine("El jugador " + (p + 2) + " ha ganado con " + puntosJugadoresOrden[p+1] + " puntos");
                             break;

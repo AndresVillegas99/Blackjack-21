@@ -47,23 +47,23 @@ namespace Blackjack_21
 
     public class Baraja
     {
-        public int rango = 47;
+        public int rango = 51;
 
         public List<Cartas> baraja = new List<Cartas>();
         public Baraja()
         {
-            llenarBarraja();
+            llenarBarraja(); //Llena la baraja con cartas
         }
 
         public void mezclarCartas()
         {
-            baraja =  baraja.OrderBy(c => Guid.NewGuid()).ToList();
+            baraja =  baraja.OrderBy(c => Guid.NewGuid()).ToList(); // Ordena aleatoriamente las cartas de la baraja
         }
         private  void llenarBarraja()
         {
             int valorM = 1;
             int repetido = 0;
-            baraja = Enumerable.Range(1, 4).SelectMany(s => Enumerable.Range(1, 13).Select(c => new Cartas()
+            baraja = Enumerable.Range(1, 4).SelectMany(s => Enumerable.Range(1, 13).Select(c => new Cartas() //Utilizando los enumerables se llena la baraja con cada naipe y 13 cartas de cada naipe
             {
                 numero = (Posicion)c,
                 variedad = (tipoDeCarta)s,
@@ -72,20 +72,20 @@ namespace Blackjack_21
             }
            )
           ) .ToList();
-            foreach (var Carta in baraja)
+            foreach (var Carta in baraja) // se utiliza para darle valor a las cartas
             {
-                if (repetido == 4) {
+                if (repetido == 4) { // se utiliza para reninicar el contador de valores
                     valorM = 1;
                     repetido = 0;
                 }
                 Carta.valor = valorM;
-                if(valorM <= 9) 
+                if(valorM <= 9) // se le agrega 1 hasta llegar al 10, una vez ahi solo se mantiene el 10 hasta que pase el rey
                 {
                     valorM += 1;
                 }
                 else
                 {
-                    repetido += 1;
+                    repetido += 1; //cuenta cuantas veces se ha repetido el 10, si llega a 4 se reinicia el contador
                 }
                 
             }
@@ -93,13 +93,13 @@ namespace Blackjack_21
         public Cartas tomarCarta()
         {
            
-            var carta = baraja.FirstOrDefault();
+            var carta = baraja.FirstOrDefault(); //Saca la primera carta de la baraja y la elimina de la lista
             baraja.Remove(carta);
             
 
             return carta;
         }
-        public void mostrarCartas() {
+        public void mostrarCartas() { // Se utilizo para mostrar las cartas sacadas, no se utiliza por el momento.
             
             foreach (var Carta in baraja)
             {
