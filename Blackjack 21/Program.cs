@@ -266,7 +266,7 @@ namespace Blackjack_21
                 total2 = casa.revisarCartasCasa(total2);
                 ganadorRevisa(esperandoC, total2, total1); //Una vez que la maquina llegue a su limite de 15 y espere se revisara quien gano
                 esperandoC = casaSaca(esperando, esperandoC, total2, casa, A); //Si la maquina no ha llegado a su limite de 15 utiliza este metoedo para sacar cartas
-
+                Console.WriteLine("La casa jugo, es su turno");
                
                 
                 comparar(total1, total2);
