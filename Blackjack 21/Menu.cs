@@ -6,7 +6,26 @@ namespace Blackjack_21
 {
     class Menu
     {
-        public static void VSmaquina()
+        Calculaciones calc = new Calculaciones();
+        public static void menus()
+        {
+            Console.WriteLine("Escoja su modo a jugar. 1)Contra maquina 2=) contra personas"); // menu para escoger el modo deseado
+            int modo = 0;
+            modo = int.Parse(Console.ReadLine());
+            Menu MenuP = new Menu();
+            switch (modo)
+            {
+                case 1:
+                    MenuP.VSmaquina();
+                    break;
+                case 2:
+                    MenuP.VSjugador();
+                    break;
+                default:
+                    break;
+            }
+        }
+        public  void VSmaquina()
         {                       //Se crean todas las variables que utilizara el jugador y la maquina, respectivamente
             int total1 = 0;
             int total2 = 0;
@@ -15,6 +34,7 @@ namespace Blackjack_21
             Baraja A = new Baraja();
             Jugador B = new Jugador();
             House casa = new House();
+            Menu MenuP = new Menu();
 
             // indica instrucciones al jugador
             Console.WriteLine("Bienvenido a Blackjack 21, seria jugador vs la casa.");
@@ -26,10 +46,10 @@ namespace Blackjack_21
             casa.unaMasCasa(A);
             B.unaMas(A);
             B.unaMas(A);
-            Menu.menuVSMaquina(total1, total2, esperando, esperandoC, A, B, casa); //muestra el menu de VSMaquina
+            MenuP.menuVSMaquina(total1, total2, esperando, esperandoC, A, B, casa); //muestra el menu de VSMaquina
         }
 
-        public static void VSjugador()
+        public  void VSjugador()
         {
             Baraja A = new Baraja();
             int jugadores = 0;
@@ -37,18 +57,19 @@ namespace Blackjack_21
             List<Jugador> jugadoresEnPartida = new List<Jugador>();
             List<int> puntosJugadores = new List<int>();
             List<bool> esperandoJugadores = new List<bool>();
+            Menu MenuP = new Menu();
 
             Console.WriteLine("Cuantas personas van a jugar, maximo 4");
-            Menu.menuVSJugador(jugadores, ganador, jugadoresEnPartida, puntosJugadores, esperandoJugadores, A);
+            MenuP.menuVSJugador(jugadores, ganador, jugadoresEnPartida, puntosJugadores, esperandoJugadores, A);
 
 
         }
 
-        public static void menuVSJugador(int jugadores, int ganador, List<Jugador> jugadoresEnPartida, List<int> puntosJugadores, List<bool> esperandoJugadores, Baraja A)
+        public  void menuVSJugador(int jugadores, int ganador, List<Jugador> jugadoresEnPartida, List<int> puntosJugadores, List<bool> esperandoJugadores, Baraja A)
         {
 
-            jugadores = decidirJugadores(jugadores);
-
+            jugadores = calc.decidirJugadores(jugadores);
+           
             for (int i = 0; i < jugadores; i++)
             {
                 Jugador X = new Jugador(); //Se crea los jugadores y sus porpiedades nhecesarias y se agregan en listas.
@@ -105,13 +126,14 @@ namespace Blackjack_21
 
                 if (!esperandoJugadores.Contains(false))
                 {
-                    resultadosJugadores(jugadores, puntosJugadores, ganador);
+                    calc.resultadosJugadores(jugadores, puntosJugadores, ganador);
                 }
             }
         }
 
-        public static void menuVSMaquina(int total1, int total2, bool esperando, bool esperandoC, Baraja A, Jugador B, House casa)
+        public  void menuVSMaquina(int total1, int total2, bool esperando, bool esperandoC, Baraja A, Jugador B, House casa)
         {
+            Menu MenuP = new Menu();
             while (true)
             {
                 do // este loop es para el jugador que decida sus movimientos y solo sale una vez que decide esperar
@@ -144,171 +166,18 @@ namespace Blackjack_21
                     }
                 } while (!esperando);
                 total2 = casa.revisarCartasCasa(total2);
-                ganadorRevisa(esperandoC, total2, total1); //Una vez que la maquina llegue a su limite de 15 y espere se revisara quien gano
-                esperandoC = casaSaca(esperando, esperandoC, total2, casa, A); //Si la maquina no ha llegado a su limite de 15 utiliza este metoedo para sacar cartas
+                calc.ganadorRevisa(esperandoC, total2, total1); //Una vez que la maquina llegue a su limite de 15 y espere se revisara quien gano
+                esperandoC = calc.casaSaca(esperando, esperandoC, total2, casa, A); //Si la maquina no ha llegado a su limite de 15 utiliza este metoedo para sacar cartas
                 Console.WriteLine("La casa jugo, es su turno");
 
 
-                comparar(total1, total2);
+                calc.comparar(total1, total2);
             }
         }
 
-        public static void ganadorRevisa(bool esperandoC, int total2, int total1)
-        {
-            if (esperandoC == true && total2 > 15) //se encarga de dar una respuesta si no hay nadie que supere 21
-            {
-                if (total1 > total2 && total1 < 22) //Si el jugador gana
-                {
-                    Console.WriteLine("Su total es " + total1 + " , la casa tuvo " + total2);
-                    Console.WriteLine("jugador gana");
-                }
-                else if (total2 > 21)
-                {
-                    Console.WriteLine("Su total es " + total1 + " , la casa tuvo " + total2);
-                    Console.WriteLine("jugador gana");
-                }
+        
 
-                else if (total1 < total2 && total2 < 22)// Si la maquina gana
-                {
-                    Console.WriteLine("Su total es " + total1 + " , la casa tuvo " + total2);
-                    Console.WriteLine("casa gana");
-                }
-                else if (total1 > 21)
-                {
-                    Console.WriteLine("Su total es " + total1 + " , la casa tuvo " + total2);
-                    Console.WriteLine("casa gana");
-                }
-                else //Si hay un empate entre jugador y maquina
-                {
-                    Console.WriteLine("Su total es " + total1 + " , la casa tuvo " + total2);
-                    Console.WriteLine("Empate, nadie gana");
-                }
-                Environment.Exit(0);
-
-            }
-        }
-
-        public static bool casaSaca(bool esperando, bool esperandoC, int total2, House casa, Baraja A)
-        {
-            do
-            {
-                if (esperando = true && total2 <= 18 && esperandoC == false) //revisa si el jugador ya paso su turno
-                {
-                    casa.unaMasCasa(A); //metodo de la casa para sacar cartas
-                    total2 = casa.revisarCartasCasa(total2); //actualiza el valor de total2, el cual es el de la casa
-                }
-                else
-                {
-                    esperandoC = true; //cambia el valor de esperando de la casa, asi diciendo que el jugador puede jugar.
-
-                }
-            } while (!esperandoC);
-            return esperandoC;
-        }
-
-        public static int decidirJugadores(int jugadores)
-        {
-            do
-            {
-                jugadores = int.Parse(Console.ReadLine()); //Restricion para solo se pueda tener 4 jugadores maximo, y no menos de 2 
-                if (jugadores > 4)
-                {
-                    Console.WriteLine("Solo maximo 4 jugadores");
-
-                }
-                else if (jugadores == 1)
-                {
-                    Console.WriteLine("Unico jugador unico ganador");
-                    Environment.Exit(0);
-                }
-                else if (jugadores < 1)
-                {
-                    Console.WriteLine("No se puede jugar sin jugadores");
-                    Environment.Exit(0);
-                }
-
-            } while (jugadores > 4);
-            return jugadores;
-        }
-
-        public static void resultadosJugadores(int jugadores, List<int> puntosJugadores, int ganador)
-        {
-            Console.WriteLine("Todos los jugadores estan listos. Los puntos de los jugadores son: ");
-            for (int t = 0; t < jugadores; t++)
-            {
-                Console.WriteLine(puntosJugadores[t]);
-            }
-            List<int> puntosJugadoresOrden = new List<int>(puntosJugadores); //Crea una nueva lista para tener el orden de mayor a menor en puntos
-            puntosJugadoresOrden.Sort();
-            puntosJugadoresOrden.Reverse();
-            for (int z = 0; z < jugadores; z++) // utiliza la lista ordenana y la desordenada  y busa cual jugador tuvo el puntaje mas alto, y lo guarda en 'ganador'
-            {
-                int p1 = puntosJugadoresOrden[z];
-                for (int zz = 0; zz < jugadores; zz++)
-                {
-                    int p2 = puntosJugadores[zz];
-                    if (p1 == p2)
-                    {
-                        ganador = zz + 1;
-                    }
-                }
-                break;
-            }
-            for (int p = 0; p < jugadores - 1; p++)
-            {
-                if (puntosJugadoresOrden[p] > puntosJugadoresOrden[p + 1]) //Indica quien fue el ganador
-                {
-                    Console.WriteLine("El jugador " + (ganador) + " ha ganado con " + puntosJugadoresOrden[p] + " puntos");
-                    break;
-                }
-                else if (puntosJugadoresOrden[p] == puntosJugadoresOrden[p + 1]) //Indica si hubo un empate
-                {
-                    Console.WriteLine("Ha ocurrido un empate, uno o mas jugadores tienen los mismos puntos, nadie gana");
-                    break;
-                }
-                else //Indica si el ganador no esta de primero en la lista.
-                {
-                    Console.WriteLine("El jugador " + (p + 2) + " ha ganado con " + puntosJugadoresOrden[p + 1] + " puntos");
-                    break;
-                }
-            }
-        }
-        public static void comparar(int a, int b) //se utiliza para comparar en caso de que el primer metodo de comparacion no funcione.
-        {
-
-            if (a == 21 && b == 21)
-            {
-                Console.WriteLine("Su total es " + a + " , la casa tuvo " + b);
-                Console.WriteLine("Empate, nadie gana ");
-                Environment.Exit(0);
-            }
-            else if (b == 21)
-            {
-                Console.WriteLine("Su total es " + a + " , la casa tuvo " + b);
-                Console.WriteLine("Casa gana");
-                Environment.Exit(0);
-            }
-            else if (a == 21)
-            {
-                Console.WriteLine("Su total es " + a + " , la casa tuvo " + b);
-                Console.WriteLine("Jugador gana");
-                Environment.Exit(0);
-            }
-            else if (a > 21)
-            {
-                Console.WriteLine("Su total es " + a);
-                Console.WriteLine("Jugador perdio");
-                Environment.Exit(0);
-            }
-            else if (b > 21)
-            {
-                Console.WriteLine("Su total es " + a + " , la casa tuvo " + b);
-                Console.WriteLine("Casa perdio");
-                Environment.Exit(0);
-            }
-
-
-        }
+        
 
     }
 }
