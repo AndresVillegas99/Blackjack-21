@@ -7,6 +7,7 @@ namespace Blackjack_21
     {
         static void Main(string[] args)
         {
+
             Menu.menus();
         }
 
